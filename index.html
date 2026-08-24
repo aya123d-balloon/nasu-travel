@@ -362,6 +362,16 @@
     margin: 15mm 12mm;
     size: A4;
   }
+  .back-to-top {
+    display: block;
+    text-align: right;
+    padding: 12px 16px 4px;
+    font-size: 0.85rem;
+    color: #9ca3af;
+    text-decoration: none;
+  }
+  .back-to-top:hover { color: #2d7d46; }
+  @media print { .back-to-top { display: none; } }
 </style>
 </head>
 <body>
@@ -379,7 +389,7 @@
 </div>
 
 <!-- ══════════════════ TOC ══════════════════ -->
-<div class="toc">
+<div class="toc" id="toc">
   <h2>📋 もくじ</h2>
   <div class="toc-grid">
     <a class="toc-card" href="#day1">
@@ -578,6 +588,7 @@
   </div>
 </div>
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ DAY 2 ══════════════════ -->
 <div class="day-section" id="day2">
   <div class="day-header">
@@ -699,6 +710,7 @@
   </div>
 </div>
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ DAY 3 ══════════════════ -->
 <div class="day-section" id="day3">
   <div class="day-header">
@@ -781,6 +793,7 @@
   </div>
 </div>
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ PACKING ══════════════════ -->
 <div class="packing-section" id="packing">
   <h2>🧳 持ち物リスト</h2>
@@ -865,6 +878,7 @@
 
 </div>
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ PRE-DEPARTURE CHECKLIST ══════════════════ -->
 <div class="predep-section" id="predep">
   <h2>🏠 出発前チェックリスト</h2>
@@ -897,6 +911,7 @@
 </div>
 
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ SOUVENIRS ══════════════════ -->
 <div class="packing-section" id="souvenirs">
   <h2>🎁 お土産リスト</h2>
@@ -953,6 +968,7 @@
   </table>
 </div>
 
+<a href="#toc" class="back-to-top">↑ 目次へ戻る</a>
 <!-- ══════════════════ FOOTER ══════════════════ -->
 <div style="text-align:center; padding: 24px; font-size: 9pt; color: #9ca3af; border-top: 1px solid var(--border);">
 </div>
