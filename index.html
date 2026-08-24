@@ -993,7 +993,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDWoBQZKBwciRgMJ7sD4XC5NQuuueqEBLY",
@@ -1027,13 +1027,11 @@
     const seen = new Set();
     const keys = Array.from(checkboxes).map(cb => getCheckboxKey(cb, seen));
 
-    get(ref(db, 'checklist')).then(snapshot => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        checkboxes.forEach((cb, i) => {
-          if (data[keys[i]] !== undefined) cb.checked = data[keys[i]];
-        });
-      }
+    onValue(ref(db, 'checklist'), snapshot => {
+      const data = snapshot.exists() ? snapshot.val() : {};
+      checkboxes.forEach((cb, i) => {
+        if (data[keys[i]] !== undefined) cb.checked = data[keys[i]];
+      });
     });
 
     checkboxes.forEach((cb, i) => {
