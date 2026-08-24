@@ -980,6 +980,50 @@
   </div>
 </div>
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDWoBQZKBwciRgMJ7sD4XC5NQuuueqEBLY",
+    authDomain: "nasu-travel.firebaseapp.com",
+    databaseURL: "https://nasu-travel-default-rtdb.firebaseio.com",
+    projectId: "nasu-travel",
+    storageBucket: "nasu-travel.firebasestorage.app",
+    messagingSenderId: "974431453545",
+    appId: "1:974431453545:web:06afde0cec44cd9516fdf8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function initCheckboxSync() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach((cb, i) => { cb.id = `cb-${i}`; });
+
+    get(ref(db, 'checklist')).then(snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        checkboxes.forEach((cb, i) => {
+          if (data[`cb-${i}`] !== undefined) cb.checked = data[`cb-${i}`];
+        });
+      }
+    });
+
+    checkboxes.forEach((cb, i) => {
+      cb.addEventListener('change', () => {
+        set(ref(db, `checklist/cb-${i}`), cb.checked);
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCheckboxSync);
+  } else {
+    initCheckboxSync();
+  }
+</script>
+
 <script>
 (function() {
   var KEY = 'nasu2026_auth';
