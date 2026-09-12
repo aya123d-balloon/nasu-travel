@@ -874,6 +874,7 @@
           <label class="check-item"><input type="checkbox"> 綾乃：着替え1日分・パジャマ・下着・靴下、長袖羽織もの</label>
           <label class="check-item"><input type="checkbox"> 悠太：着替え1日分・パジャマ・下着・靴下、長袖羽織もの</label>
           <label class="check-item"><input type="checkbox"> 夜用オムツ 1〜2枚</label>
+          <label class="check-item"><input type="checkbox"> おねしょシート</label>
           <label class="check-item"><input type="checkbox"> 各種充電用機器</label>
           <label class="check-item"><input type="checkbox"> 大人歯ブラシ、歯磨き粉</label>
           <label class="check-item"><input type="checkbox"> 瑞生歯ブラシ、歯磨き粉</label>
@@ -1021,8 +1022,15 @@
       </tr>
       <tr>
         <td><input type="checkbox"></td>
+        <td>長濱家</td>
+        <td>美味しいおやつ</td>
+        <td>1</td>
+        <td>りんどう湖</td>
+      </tr>
+      <tr>
+        <td><input type="checkbox"></td>
         <td>島崎家</td>
-        <td>3000円くらいの栃木ギフト</td>
+        <td>3000円くらいの栃木ギフト<br><span style="font-size:8pt;color:#6b7280;">※ 直接発送</span></td>
         <td>1</td>
         <td></td>
       </tr>
@@ -1116,6 +1124,55 @@
     document.getElementById('pw-input').focus();
   };
 })();
+</script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    databaseURL: "https://nasu-travel-default-rtdb.firebaseio.com"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function makeKeys() {
+    const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+    const seen = {};
+    const keys = [];
+    checkboxes.forEach(cb => {
+      const label = cb.closest('label');
+      const raw = (label ? label.textContent : '').trim().slice(0, 40);
+      const count = (seen[raw] = (seen[raw] || 0) + 1);
+      keys.push(count === 1 ? raw : `${raw}-${count}`);
+    });
+    return keys;
+  }
+
+  function safeKey(str) {
+    return str.replace(/[.#$\[\]/]/g, '_');
+  }
+
+  const DBPATH = 'nasu2026_checks';
+
+  onValue(ref(db, DBPATH), snapshot => {
+    const data = snapshot.val() || {};
+    const checkboxes = document.querySelectorAll('.check-item input[type="checkbox"]');
+    const keys = makeKeys();
+    checkboxes.forEach((cb, i) => {
+      const k = safeKey(keys[i]);
+      cb.checked = !!data[k];
+      cb.closest('label').classList.toggle('checked', !!data[k]);
+    });
+  });
+
+  document.querySelectorAll('.check-item input[type="checkbox"]').forEach((cb, i) => {
+    cb.addEventListener('change', () => {
+      const keys = makeKeys();
+      const k = safeKey(keys[i]);
+      set(ref(db, `${DBPATH}/${k}`), cb.checked || null);
+    });
+  });
 </script>
 
 </body>
